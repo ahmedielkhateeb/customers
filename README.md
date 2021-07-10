@@ -18,6 +18,13 @@ This project is a starting point for a Spring boot application.
 # Accessing the Application
 - you can access the Application throw http://localhost:8088/
 
+# Country Guide
+- Cameroon ------------------------> Code = 237
+- Ethiopia ---------------------------> Code = 251
+- Morocco --------------------------> Code = 212
+- Mozambique --------------------> Code = 258
+- Uganda ---------------------------> Code = 256
+
 # Provided Apis
 - http://localhost:8088/customer/countryCode/{code}/state/{state}
 - code allowed values is {any,237,251,212,258,256}
