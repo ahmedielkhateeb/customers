@@ -19,7 +19,7 @@ This project is a starting point for a Spring boot application.
 - you can access the Application throw http://localhost:8088/
 
 # Provided Apis
-- localhost:8088/customer/countryCode/{code}/state/{state}
+- http://localhost:8088/customer/countryCode/{code}/state/{state}
 - code allowed values is {any,237,251,212,258,256}
 - state allowed values is {any,valid,invalid}
 - for example to get all customers use http://localhost:8088/customer/countryCode/any/state/any
