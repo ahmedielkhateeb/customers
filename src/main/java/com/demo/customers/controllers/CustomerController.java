@@ -3,6 +3,7 @@ package com.demo.customers.controllers;
 import com.demo.customers.dto.CustomerResponse;
 import com.demo.customers.exceptions.custom.NotAcceptableException;
 import com.demo.customers.exceptions.custom.NotFoundException;
+import com.demo.customers.models.Customer;
 import com.demo.customers.services.CustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -30,5 +32,13 @@ public class CustomerController {
         List<CustomerResponse> customerResponseList = customerService.getCustomersByCountryCodeAndState(countryCode, state);
         log.info("Exit getCustomers Method of CustomerController Class");
         return ResponseEntity.ok(customerResponseList);
+    }
+
+    @GetMapping(value = {"/countries", "/countries/"})
+    public ResponseEntity<?> getCountries() {
+        log.info("Enter getCountries Method of CustomerController Class" );
+        Map<String,String> countriesMap = Customer.countries;
+        log.info("Exit getCustomers Method of CustomerController Class");
+        return ResponseEntity.ok(countriesMap);
     }
 }
