@@ -1,5 +1,6 @@
 package com.demo.customers.services;
 
+import com.demo.customers.dto.CountryResponse;
 import com.demo.customers.dto.CustomerResponse;
 import com.demo.customers.exceptions.custom.NotAcceptableException;
 import com.demo.customers.exceptions.custom.NotFoundException;
@@ -8,6 +9,7 @@ import com.demo.customers.repositories.CustomerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -17,6 +19,8 @@ public class CustomerService {
 
     private final CustomerRepository customerRepository;
     private final Logger log = LoggerFactory.getLogger(CustomerService.class);
+    @Value("#{${countries.map}}")
+    Map<String, String> countries;
 
     @Autowired
     public CustomerService(CustomerRepository customerRepository) {
@@ -144,5 +148,18 @@ public class CustomerService {
                         customerResponseList.add(customerResponse);
                     });
         }
+    }
+
+    public List<CountryResponse> getCountries() {
+        log.info("Enter getCountries Method of CustomerService Class");
+
+        List<CountryResponse> countryResponseList = new ArrayList<>();
+        countries.forEach((countryCode, countryName) -> {
+            CountryResponse countryResponse = new CountryResponse(countryName, countryCode);
+            countryResponseList.add(countryResponse);
+        });
+
+        log.info("Exit getCountries Method of CustomerService Class");
+        return countryResponseList;
     }
 }

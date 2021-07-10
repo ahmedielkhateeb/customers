@@ -1,5 +1,6 @@
 package com.demo.customers.controllers;
 
+import com.demo.customers.dto.CountryResponse;
 import com.demo.customers.dto.CustomerResponse;
 import com.demo.customers.exceptions.custom.NotAcceptableException;
 import com.demo.customers.exceptions.custom.NotFoundException;
@@ -36,9 +37,9 @@ public class CustomerController {
 
     @GetMapping(value = {"/countries", "/countries/"})
     public ResponseEntity<?> getCountries() {
-        log.info("Enter getCountries Method of CustomerController Class" );
-        Map<String,String> countriesMap = Customer.countries;
+        log.info("Enter getCountries Method of CustomerController Class");
+        List<CountryResponse> countryResponseList = customerService.getCountries();
         log.info("Exit getCustomers Method of CustomerController Class");
-        return ResponseEntity.ok(countriesMap);
+        return ResponseEntity.ok(countryResponseList);
     }
 }
