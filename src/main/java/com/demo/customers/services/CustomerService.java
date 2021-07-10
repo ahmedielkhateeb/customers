@@ -20,7 +20,7 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
     private final Logger log = LoggerFactory.getLogger(CustomerService.class);
     @Value("#{${countries.map}}")
-    Map<String, String> countries;
+    private Map<String, String> countries;
 
     @Autowired
     public CustomerService(CustomerRepository customerRepository) {
@@ -85,7 +85,7 @@ public class CustomerService {
     private List<CustomerResponse> getAllCustomersWithSpecificCountryCodeAndAnyState(String countryCode) throws NotFoundException {
         List<CustomerResponse> customerResponseList = new ArrayList<>();
 
-        if (!Customer.countries.containsKey(countryCode)) {
+        if (!countries.containsKey(countryCode)) {
             //throw an exception if countryCode is not listed
             log.error("country code (" + countryCode + ") not found");
             throw new NotFoundException("country code (" + countryCode + ") not found");
@@ -112,7 +112,7 @@ public class CustomerService {
 
     private List<CustomerResponse> getAllCustomersWithSpecificCountryCodeAndSpecificState(String countryCode, String state) throws NotFoundException, NotAcceptableException {
         List<CustomerResponse> customerResponseList = new ArrayList<>();
-        if (!Customer.countries.containsKey(countryCode)) {
+        if (!countries.containsKey(countryCode)) {
             //throw an exception if countryCode is not listed
             log.error("country code (" + countryCode + ") not found");
             throw new NotFoundException("country code (" + countryCode + ") not found");
