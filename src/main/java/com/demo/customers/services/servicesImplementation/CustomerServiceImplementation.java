@@ -42,13 +42,34 @@ public class CustomerServiceImplementation implements CustomerService {
         List<CustomerResponse> customerResponseList;
 
         if (countryCode.equalsIgnoreCase("any") && state.equalsIgnoreCase("any")) {
+
+            log.info("Enter getAllCustomers Method inside getCustomersByCountryCodeAndState Method of CustomerService Class");
+
             customerResponseList = getAllCustomers();
+
+            log.info("Exit getAllCustomers Method inside getCustomersByCountryCodeAndState Method of CustomerService Class");
+
         } else if (countryCode.equalsIgnoreCase("any") && !state.equalsIgnoreCase("any")) {
+
+            log.info("Enter getAllCustomersWithAnyCountryCodeAndSpecificState Method inside getCustomersByCountryCodeAndState Method of CustomerService Class");
+
             customerResponseList = getAllCustomersWithAnyCountryCodeAndSpecificState(state);
+
+            log.info("Exit getAllCustomersWithAnyCountryCodeAndSpecificState Method inside getCustomersByCountryCodeAndState Method of CustomerService Class");
+
         } else if (!countryCode.equalsIgnoreCase("any") && state.equalsIgnoreCase("any")) {
+            log.info("Enter getAllCustomersWithSpecificCountryCodeAndAnyState Method inside getCustomersByCountryCodeAndState Method of CustomerService Class");
+
             customerResponseList = getAllCustomersWithSpecificCountryCodeAndAnyState(countryCode);
+
+            log.info("Exit getAllCustomersWithSpecificCountryCodeAndAnyState Method inside getCustomersByCountryCodeAndState Method of CustomerService Class");
         } else {
+
+            log.info("Enter getAllCustomersWithSpecificCountryCodeAndSpecificState Method inside getCustomersByCountryCodeAndState Method of CustomerService Class");
+
             customerResponseList = getAllCustomersWithSpecificCountryCodeAndSpecificState(countryCode, state);
+
+            log.info("Exit getAllCustomersWithSpecificCountryCodeAndSpecificState Method inside getCustomersByCountryCodeAndState Method of CustomerService Class");
         }
         log.info("Exit getCustomersByCountryCodeAndState Method of CustomerService Class");
         return customerResponseList;
