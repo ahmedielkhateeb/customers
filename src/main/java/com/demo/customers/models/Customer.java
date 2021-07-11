@@ -47,24 +47,22 @@ public class Customer {
     @Getter(value = AccessLevel.NONE)
     private String state;
 
-    @Transient
-    public static final Map<String, String> countries = new HashMap<String, String>() {
-        {
-            put("237", "Cameroon");
-            put("251", "Ethiopia");
-            put("212", "Morocco");
-            put("258", "Mozambique");
-            put("256", "Uganda");
-
-        }
-    };
-
 
     public String getCountryCode() {
         return getPhone().substring(1, 4);
     }
 
     public String getCountry() {
+        final Map<String, String> countries = new HashMap<String, String>() {
+            {
+                put("237", "Cameroon");
+                put("251", "Ethiopia");
+                put("212", "Morocco");
+                put("258", "Mozambique");
+                put("256", "Uganda");
+
+            }
+        };
         return countries.get(getCountryCode());
     }
 
