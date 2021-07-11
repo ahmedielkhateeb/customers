@@ -2,8 +2,6 @@ package com.demo.customers.dto;
 
 import lombok.*;
 
-import java.util.Objects;
-
 
 @AllArgsConstructor
 @NoArgsConstructor

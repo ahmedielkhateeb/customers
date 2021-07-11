@@ -5,6 +5,7 @@ import com.demo.customers.exceptions.custom.NotAcceptableException;
 import com.demo.customers.exceptions.custom.NotFoundException;
 import com.demo.customers.models.Customer;
 import com.demo.customers.repositories.CustomerRepository;
+import com.demo.customers.services.servicesImplementation.CustomerServiceImplementation;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,17 +14,21 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RunWith(SpringRunner.class)
-public class CustomerServiceTest {
+public class CustomerServiceImplementationTest {
     @Mock
     CustomerRepository customerRepository;
     @InjectMocks
-    CustomerService customerService;
+    CustomerServiceImplementation customerServiceImplementation;
 
+    private Map<String, String> countries;
     private Customer customerNumOne;
     private Customer customerNumTwo;
     private List<Customer> customerList;
@@ -36,6 +41,17 @@ public class CustomerServiceTest {
 
     @Before
     public void init() {
+        countries = new HashMap<String, String>() {
+            {
+                put("237", "Cameroon");
+                put("251", "Ethiopia");
+                put("212", "Morocco");
+                put("258", "Mozambique");
+                put("256", "Uganda");
+
+            }
+        };
+        ReflectionTestUtils.setField(customerServiceImplementation, "countries", countries);
         customerNumOne = new Customer();
         customerNumOne.setName("Walid Hammadi");
         customerNumOne.setPhone("(212) 6007989253");
@@ -70,7 +86,7 @@ public class CustomerServiceTest {
     @Test
     public void getCustomersByCountryCodeAndStateTest1() throws NotAcceptableException, NotFoundException {
         Mockito.when(customerRepository.findAll()).thenReturn(customerList);
-        List<CustomerResponse> customerResponseListTest = customerService.getCustomersByCountryCodeAndState("any", "any");
+        List<CustomerResponse> customerResponseListTest = customerServiceImplementation.getCustomersByCountryCodeAndState("any", "any");
         Assert.assertEquals(customerResponseList, customerResponseListTest);
     }
 
@@ -78,7 +94,7 @@ public class CustomerServiceTest {
     @Test
     public void getCustomersByCountryCodeAndStateTest2() throws NotAcceptableException, NotFoundException {
         Mockito.when(customerRepository.findAll()).thenReturn(customerList);
-        List<CustomerResponse> customerResponseListTest = customerService.getCustomersByCountryCodeAndState("any", "valid");
+        List<CustomerResponse> customerResponseListTest = customerServiceImplementation.getCustomersByCountryCodeAndState("any", "valid");
         Assert.assertEquals(validCustomerResponseList, customerResponseListTest);
     }
 
@@ -86,7 +102,7 @@ public class CustomerServiceTest {
     @Test
     public void getCustomersByCountryCodeAndStateTest3() throws NotAcceptableException, NotFoundException {
         Mockito.when(customerRepository.findAll()).thenReturn(customerList);
-        List<CustomerResponse> customerResponseListTest = customerService.getCustomersByCountryCodeAndState("any", "invalid");
+        List<CustomerResponse> customerResponseListTest = customerServiceImplementation.getCustomersByCountryCodeAndState("any", "invalid");
         Assert.assertEquals(invalidCustomerResponseList, customerResponseListTest);
     }
 
@@ -94,7 +110,7 @@ public class CustomerServiceTest {
     @Test
     public void getCustomersByCountryCodeAndStateTest4() throws NotAcceptableException, NotFoundException {
         Mockito.when(customerRepository.findByCountry("(212)%")).thenReturn(customerList);
-        List<CustomerResponse> customerResponseListTest = customerService.getCustomersByCountryCodeAndState("212", "any");
+        List<CustomerResponse> customerResponseListTest = customerServiceImplementation.getCustomersByCountryCodeAndState("212", "any");
         Assert.assertEquals(customerResponseList, customerResponseListTest);
     }
 
@@ -102,7 +118,7 @@ public class CustomerServiceTest {
     @Test
     public void getCustomersByCountryCodeAndStateTest5() throws NotAcceptableException, NotFoundException {
         Mockito.when(customerRepository.findByCountry("(212)%")).thenReturn(customerList);
-        List<CustomerResponse> customerResponseListTest = customerService.getCustomersByCountryCodeAndState("212", "valid");
+        List<CustomerResponse> customerResponseListTest = customerServiceImplementation.getCustomersByCountryCodeAndState("212", "valid");
         Assert.assertEquals(validCustomerResponseList, customerResponseListTest);
     }
 
@@ -110,7 +126,7 @@ public class CustomerServiceTest {
     @Test
     public void getCustomersByCountryCodeAndStateTest6() throws NotAcceptableException, NotFoundException {
         Mockito.when(customerRepository.findByCountry("(212)%")).thenReturn(customerList);
-        List<CustomerResponse> customerResponseListTest = customerService.getCustomersByCountryCodeAndState("212", "invalid");
+        List<CustomerResponse> customerResponseListTest = customerServiceImplementation.getCustomersByCountryCodeAndState("212", "invalid");
         Assert.assertEquals(invalidCustomerResponseList, customerResponseListTest);
     }
 
@@ -119,63 +135,63 @@ public class CustomerServiceTest {
     @Test(expected = NotFoundException.class)
     public void getCustomersByCountryCodeAndStateTest7() throws NotAcceptableException, NotFoundException {
         Mockito.when(customerRepository.findAll()).thenReturn(new ArrayList<>());
-        List<CustomerResponse> customerResponseListTest = customerService.getCustomersByCountryCodeAndState("any", "any");
+        List<CustomerResponse> customerResponseListTest = customerServiceImplementation.getCustomersByCountryCodeAndState("any", "any");
     }
 
     //test for checking if the filter is to find any country with specific phone number state (find the customers of valid  phone numbers)
     @Test(expected = NotFoundException.class)
     public void getCustomersByCountryCodeAndStateTest8() throws NotAcceptableException, NotFoundException {
         Mockito.when(customerRepository.findAll()).thenReturn(new ArrayList<>());
-        List<CustomerResponse> customerResponseListTest = customerService.getCustomersByCountryCodeAndState("any", "valid");
+        List<CustomerResponse> customerResponseListTest = customerServiceImplementation.getCustomersByCountryCodeAndState("any", "valid");
     }
 
     //test for checking if the filter is to find any country with specific phone number state (find the customers of invalid phone numbers)
     @Test(expected = NotFoundException.class)
     public void getCustomersByCountryCodeAndStateTest9() throws NotAcceptableException, NotFoundException {
         Mockito.when(customerRepository.findAll()).thenReturn(new ArrayList<>());
-        List<CustomerResponse> customerResponseListTest = customerService.getCustomersByCountryCodeAndState("any", "invalid");
+        List<CustomerResponse> customerResponseListTest = customerServiceImplementation.getCustomersByCountryCodeAndState("any", "invalid");
     }
 
     //test for checking if the filter is to find specific country with any phone number state (find the customers of specific country)
     @Test(expected = NotFoundException.class)
     public void getCustomersByCountryCodeAndStateTest10() throws NotAcceptableException, NotFoundException {
         Mockito.when(customerRepository.findByCountry("(212)%")).thenReturn(new ArrayList<>());
-        List<CustomerResponse> customerResponseListTest = customerService.getCustomersByCountryCodeAndState("212", "any");
+        List<CustomerResponse> customerResponseListTest = customerServiceImplementation.getCustomersByCountryCodeAndState("212", "any");
     }
 
     //test for checking if the filter is to find specific country with specific phone number state (find the customers of specific country and specific phone number state)
     @Test(expected = NotFoundException.class)
     public void getCustomersByCountryCodeAndStateTest11() throws NotAcceptableException, NotFoundException {
         Mockito.when(customerRepository.findByCountry("(212)%")).thenReturn(new ArrayList<>());
-        List<CustomerResponse> customerResponseListTest = customerService.getCustomersByCountryCodeAndState("212", "valid");
+        List<CustomerResponse> customerResponseListTest = customerServiceImplementation.getCustomersByCountryCodeAndState("212", "valid");
     }
 
     //test for checking if the filter is to find specific country with specific phone number state (find the customers of specific country and specific phone number state)
     @Test(expected = NotFoundException.class)
     public void getCustomersByCountryCodeAndStateTest12() throws NotAcceptableException, NotFoundException {
         Mockito.when(customerRepository.findByCountry("(212)%")).thenReturn(new ArrayList<>());
-        List<CustomerResponse> customerResponseListTest = customerService.getCustomersByCountryCodeAndState("212", "invalid");
+        List<CustomerResponse> customerResponseListTest = customerServiceImplementation.getCustomersByCountryCodeAndState("212", "invalid");
     }
 
     //test for checking if countryCode or state unlisted
     //test for checking unlisted state
     @Test(expected = NotAcceptableException.class)
     public void getCustomersByCountryCodeAndStateTest13() throws NotAcceptableException, NotFoundException {
-        Mockito.when(customerRepository.findAll()).thenReturn(customerList);
-        List<CustomerResponse> customerResponseListTest = customerService.getCustomersByCountryCodeAndState("any", "validddd");
+        Mockito.when(customerRepository.findAll()).thenReturn(new ArrayList<>());
+        List<CustomerResponse> customerResponseListTest = customerServiceImplementation.getCustomersByCountryCodeAndState("any", "validddd");
     }
 
     //test for checking unlisted countryCode
     @Test(expected = NotFoundException.class)
     public void getCustomersByCountryCodeAndStateTest14() throws NotAcceptableException, NotFoundException {
-        Mockito.when(customerRepository.findAll()).thenReturn(customerList);
-        List<CustomerResponse> customerResponseListTest = customerService.getCustomersByCountryCodeAndState("418", "any");
+        Mockito.when(customerRepository.findAll()).thenReturn(new ArrayList<>());
+        List<CustomerResponse> customerResponseListTest = customerServiceImplementation.getCustomersByCountryCodeAndState("418", "any");
     }
 
     //test for checking unlisted countryCode and countryCode
     @Test(expected = NotFoundException.class)
     public void getCustomersByCountryCodeAndStateTest15() throws NotAcceptableException, NotFoundException {
-        Mockito.when(customerRepository.findAll()).thenReturn(customerList);
-        List<CustomerResponse> customerResponseListTest = customerService.getCustomersByCountryCodeAndState("418", "validddd");
+        Mockito.when(customerRepository.findAll()).thenReturn(new ArrayList<>());
+        List<CustomerResponse> customerResponseListTest = customerServiceImplementation.getCustomersByCountryCodeAndState("418", "validddd");
     }
 }
