@@ -1,4 +1,4 @@
-package com.demo.customers.services;
+package com.demo.customers.services.servicesImplementation;
 
 import com.demo.customers.dto.CustomerResponse;
 import com.demo.customers.exceptions.custom.NotAcceptableException;
